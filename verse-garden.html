@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPA 4th Grade Verse Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#BFE3F0;
+    --sky-bottom:#EAF6E8;
+    --soil:#7A5236;
+    --soil-dark:#5A3B26;
+    --leaf:#4C8C4A;
+    --leaf-dark:#356934;
+    --bloom:#F2637A;
+    --gold:#F4B740;
+    --sky-accent:#4FA8D8;
+    --cream:#FFFBF2;
+    --ink:#2E3A2F;
+    --ink-soft:#5C6B5C;
+    --danger:#D6543F;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  #vg-root{
+    font-family:'Nunito',sans-serif;
+    color:var(--ink);
+    background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bottom) 55%,#DCEFD2 100%);
+    min-height:100vh;
+    padding:0 0 3rem;
+  }
+  #vg-root h1,#vg-root h2,#vg-root h3,#vg-root .fredoka{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+  }
+  .vg-header{
+    padding:2rem 1.5rem 1rem;
+    text-align:center;
+    position:relative;
+  }
+  .vg-header h1{
+    font-size:2.1rem;
+    margin:0;
+    color:var(--leaf-dark);
+    letter-spacing:0.5px;
+  }
+  .vg-header p{
+    margin:0.3rem 0 0;
+    color:var(--ink-soft);
+    font-size:1rem;
+  }
+  .vg-sun{
+    position:absolute;
+    top:1.2rem;
+    right:1.5rem;
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 0 6px rgba(244,183,64,0.25);
+  }
+  .vg-toolbar{
+    display:flex;
+    justify-content:center;
+    gap:0.75rem;
+    flex-wrap:wrap;
+    padding:0.5rem 1.5rem 1.5rem;
+  }
+  .vg-btn{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    border:none;
+    border-radius:999px;
+    padding:0.65rem 1.3rem;
+    cursor:pointer;
+    background:var(--leaf);
+    color:#fff;
+    transition:transform 0.12s ease, background 0.12s ease;
+  }
+  .vg-btn:hover{background:var(--leaf-dark);}
+  .vg-btn:active{transform:scale(0.96);}
+  .vg-btn.secondary{
+    background:var(--cream);
+    color:var(--leaf-dark);
+    border:2px solid var(--leaf);
+  }
+  .vg-btn.secondary:hover{background:#f0ead9;}
+  .vg-btn.danger{background:var(--danger);}
+  .vg-btn.danger:hover{background:#b8402d;}
+  .vg-btn:focus-visible, .vg-tile:focus-visible, .vg-blank:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:3px solid var(--sky-accent);
+    outline-offset:2px;
+  }
+  .vg-garden{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 1.5rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+    gap:1.1rem;
+  }
+  .vg-card{
+    background:var(--cream);
+    border-radius:var(--radius);
+    border:2px solid #E7DCC2;
+    padding:0.9rem 0.9rem 0.7rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    cursor:pointer;
+    text-align:center;
+    position:relative;
+  }
+  .vg-card:hover{border-color:var(--leaf);}
+  .vg-card.vg-locked{
+    cursor:default;
+    opacity:0.55;
+    border-style:dashed;
+  }
+  .vg-card.vg-locked:hover{border-color:#E7DCC2;}
+  .vg-card .vg-week{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    font-weight:800;
+    margin-bottom:0.35rem;
+  }
+  .vg-featured-badge{
+    position:absolute;
+    top:-10px;
+    background:var(--gold);
+    color:#5A3B26;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:0.72rem;
+    padding:0.2rem 0.6rem;
+    border-radius:999px;
+  }
+  .vg-plantbox{
+    width:100%;
+    height:110px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    margin-bottom:0.4rem;
+  }
+  .vg-ref{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    color:var(--ink);
+    margin:0;
+  }
+  .vg-stage-label{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-top:0.15rem;
+  }
+  .vg-edit-row{
+    display:flex;
+    gap:0.4rem;
+    margin-top:0.55rem;
+  }
+  .vg-icon-btn{
+    background:#fff;
+    border:1.5px solid #E7DCC2;
+    border-radius:8px;
+    width:32px;height:32px;
+    font-size:0.9rem;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .vg-icon-btn:hover{border-color:var(--leaf);}
+  .vg-empty{
+    max-width:520px;
+    margin:2rem auto 0;
+    text-align:center;
+    background:var(--cream);
+    border:2px dashed #C9BC98;
+    border-radius:var(--radius);
+    padding:2.2rem 1.5rem;
+  }
+  .vg-empty h2{margin:0 0 0.4rem;color:var(--leaf-dark);}
+  .vg-empty p{color:var(--ink-soft);margin:0 0 1.2rem;}
+
+  .vg-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(46,58,47,0.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:1.2rem;
+    z-index:50;
+  }
+  .vg-modal{
+    background:var(--cream);
+    border-radius:20px;
+    max-width:560px;
+    width:100%;
+    max-height:88vh;
+    overflow-y:auto;
+    padding:1.6rem;
+    position:relative;
+  }
+  .vg-close{
+    position:absolute;
+    top:0.9rem;right:0.9rem;
+    background:none;border:none;
+    font-size:1.4rem;
+    cursor:pointer;
+    color:var(--ink-soft);
+    line-height:1;
+    width:32px;height:32px;
+  }
+  .vg-modal h2{margin:0 0 0.2rem;color:var(--leaf-dark);}
+  .vg-modal .vg-sub{color:var(--ink-soft);margin:0 0 1.1rem;font-size:0.9rem;}
+  label.vg-label{
+    display:block;
+    font-weight:700;
+    font-size:0.85rem;
+    margin:0.9rem 0 0.3rem;
+    color:var(--ink);
+  }
+  input[type=text], textarea{
+    width:100%;
+    font-family:'Nunito',sans-serif;
+    font-size:1rem;
+    border:2px solid #E7DCC2;
+    border-radius:10px;
+    padding:0.55rem 0.7rem;
+    background:#fff;
+    color:var(--ink);
+  }
+  textarea{min-height:90px;resize:vertical;}
+  .vg-modeGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0.7rem;
+    margin-top:0.4rem;
+  }
+  .vg-modeCard{
+    background:#fff;
+    border:2px solid #E7DCC2;
+    border-radius:14px;
+    padding:0.9rem 0.7rem;
+    text-align:center;
+    cursor:pointer;
+  }
+  .vg-modeCard:hover{border-color:var(--leaf);}
+  .vg-modeCard .vg-mode-emoji{font-size:1.6rem;display:block;margin-bottom:0.3rem;}
+  .vg-modeCard .vg-mode-title{font-family:'Fredoka',sans-serif;font-weight:600;font-size:0.95rem;}
+  .vg-mastery-row{
+    display:flex;align-items:center;gap:0.5rem;
+    margin:0.8rem 0 0.2rem;
+  }
+  .vg-mastery-track{
+    flex:1;height:10px;border-radius:6px;background:#E7DCC2;overflow:hidden;
+  }
+  .vg-mastery-fill{
+    height:100%;background:var(--leaf);border-radius:6px;
+  }
+  .vg-mastery-pct{font-size:0.8rem;font-weight:800;color:var(--leaf-dark);min-width:34px;text-align:right;}
+
+  .vg-flash{
+    background:#fff;
+    border:2px solid #E7DCC2;
+    border-radius:16px;
+    padding:2.2rem 1.2rem;
+    text-align:center;
+    min-height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-family:'Fredoka',sans-serif;
+    font-size:1.15rem;
+    color:var(--ink);
+  }
+  .vg-flash .vg-flash-hint{
+    display:block;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.75rem;
+    color:var(--ink-soft);margin-top:0.6rem;
+  }
+  .vg-rate-row{display:flex;gap:0.6rem;justify-content:center;margin-top:1rem;}
+
+  .vg-blankwrap{line-height:2.4;font-size:1.08rem;}
+  .vg-blank{
+    display:inline-block;
+    border:none;
+    border-bottom:2.5px solid var(--sky-accent);
+    background:#fff;
+    font-family:'Nunito',sans-serif;
+    font-size:1rem;
+    text-align:center;
+    padding:0.25rem 0.5rem;
+    margin:0 3px;
+    border-radius:4px;
+    min-width:3.5em;
+  }
+  .vg-blank.correct{border-color:var(--leaf);background:#EAF3DE;}
+  .vg-blank.wrong{border-color:var(--danger);background:#FCEBEB;}
+
+  .vg-tiles-pool, .vg-tiles-answer{
+    display:flex;flex-wrap:wrap;gap:0.5rem;
+    min-height:52px;
+    border-radius:12px;
+    padding:0.6rem;
+  }
+  .vg-tiles-pool{background:#fff;border:2px dashed #E7DCC2;}
+  .vg-tiles-answer{background:#EAF3DE;border:2px solid #C7DDAF;margin-bottom:0.8rem;}
+  .vg-tile{
+    background:var(--cream);
+    border:2px solid #E7DCC2;
+    border-radius:8px;
+    padding:0.4rem 0.7rem;
+    font-family:'Nunito',sans-serif;
+    font-weight:700;
+    cursor:pointer;
+    font-size:0.95rem;
+  }
+  .vg-tile:hover{border-color:var(--leaf);}
+  .vg-tile.placed{opacity:0.35;cursor:default;}
+  .vg-tile.answer-tile{background:#fff;}
+
+  .vg-typeresult{margin-top:0.8rem;line-height:2;font-size:1.02rem;}
+  .vg-word-ok{color:var(--leaf-dark);font-weight:700;}
+  .vg-word-bad{color:var(--danger);font-weight:700;text-decoration:underline wavy;}
+
+  .vg-feedback{
+    margin-top:1rem;
+    padding:0.8rem 1rem;
+    border-radius:12px;
+    font-weight:700;
+    text-align:center;
+  }
+  .vg-feedback.good{background:#EAF3DE;color:var(--leaf-dark);}
+  .vg-feedback.mid{background:#FAEEDA;color:#854F0B;}
+  .vg-feedback.low{background:#FCEBEB;color:var(--danger);}
+
+  .vg-back-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.2rem;}
+  .vg-loading{text-align:center;padding:3rem 1rem;color:var(--ink-soft);}
+  @media (prefers-reduced-motion: reduce){
+    .vg-btn, .vg-card{transition:none;}
+  }
+</style>
+</head>
+<body>
+<div id="vg-root"><div class="vg-loading">Loading your garden...</div></div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'garden-verses';
+  const PIN_KEY = 'garden-teacher-pin';
+  function getPin(){
+    try{ return localStorage.getItem(PIN_KEY) || 'kopitiam'; }
+    catch(e){ return 'kopitiam'; }
+  }
+  function setPin(newPin){
+    try{ localStorage.setItem(PIN_KEY, newPin); }
+    catch(e){ console.error('Could not save PIN', e); }
+  }
+  function checkPin(){
+    const entered = prompt('Enter the teacher PIN to manage verses:');
+    if(entered === null) return false;
+    if(entered === getPin()) return true;
+    alert("That PIN didn't match, so verses stay locked for editing.");
+    return false;
+  }
+  let verses = [];
+  let editMode = false;
+  let loaded = false;
+  let activeVerseId = null;
+  let activeMode = null;
+  let gameState = {};
+
+  const DEFAULT_VERSES = [
+    {id:"d01", week:"Letter A", reference:"Matthew 7:7", text:"Ask and it will be given to you; seek and you will find; knock and the door will be opened to you.", mastery:0, current:true},
+    {id:"d02", week:"Letter B", reference:"Ephesians 4:32", text:"Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.", mastery:0, current:false},
+    {id:"d03", week:"Letter C", reference:"Ephesians 6:1", text:"Children, obey your parents in the Lord, for this is right.", mastery:0, current:false},
+    {id:"d04", week:"Letter D", reference:"Luke 6:31", text:"Do to others as you would have them do to you.", mastery:0, current:false},
+    {id:"d05", week:"Letter E", reference:"James 1:17", text:"Every good and perfect gift is from above, coming down from the Father of the heavenly lights.", mastery:0, current:false},
+    {id:"d06", week:"Letter F", reference:"Jeremiah 29:11", text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you.", mastery:0, current:false},
+    {id:"d07", week:"Letter G", reference:"Psalm 107:1", text:"Give thanks to the Lord, for he is good; his love endures forever.", mastery:0, current:false},
+    {id:"d08", week:"Letter H", reference:"Exodus 20:12", text:"Honor your father and your mother, so that you may live long in the land the Lord your God is giving you.", mastery:0, current:false},
+    {id:"d09", week:"Letter I", reference:"Philippians 4:13", text:"I can do all this through him who gives me strength.", mastery:0, current:false},
+    {id:"d10", week:"Letter J", reference:"Hebrews 13:8", text:"Jesus Christ is the same yesterday and today and forever.", mastery:0, current:false},
+    {id:"d11", week:"Letter K", reference:"Joshua 1:8", text:"Keep this Book of the Law always on your lips; meditate on it day and night.", mastery:0, current:false},
+    {id:"d12", week:"Letter L", reference:"Matthew 22:37", text:"Love the Lord your God with all your heart and with all your soul and with all your mind.", mastery:0, current:false},
+    {id:"d13", week:"Letter M", reference:"Psalm 121:2", text:"My help comes from the Lord, the Maker of heaven and earth.", mastery:0, current:false},
+    {id:"d14", week:"Letter N", reference:"Hebrews 11:1", text:"Now faith is confidence in what we hope for and assurance about what we do not see.", mastery:0, current:false},
+    {id:"d15", week:"Letter O", reference:"Psalm 107:1", text:"Oh, give thanks to the Lord, for he is good; for his steadfast love endures forever.", mastery:0, current:false},
+    {id:"d16", week:"Letter P", reference:"1 Thessalonians 5:17-18", text:"Pray continually, give thanks in all circumstances; for this is God's will for you in Christ Jesus.", mastery:0, current:false},
+    {id:"d17", week:"Letter Q", reference:"Psalm 143:7", text:"Quick, answer me, Lord; my spirit fails. Do not hide your face from me.", mastery:0, current:false},
+    {id:"d18", week:"Letter R", reference:"Philippians 4:4", text:"Rejoice in the Lord always. I will say it again: Rejoice!", mastery:0, current:false},
+    {id:"d19", week:"Letter S", reference:"Matthew 7:12", text:"So in everything, do to others what you would have them do to you.", mastery:0, current:false},
+    {id:"d20", week:"Letter T", reference:"Proverbs 3:5", text:"Trust in the Lord with all your heart and lean not on your own understanding.", mastery:0, current:false},
+    {id:"d21", week:"Letter U", reference:"Psalm 127:1", text:"Unless the Lord builds the house, the builders labor in vain.", mastery:0, current:false},
+    {id:"d22", week:"Letter V", reference:"John 6:47", text:"Very truly I tell you, the one who believes has eternal life.", mastery:0, current:false},
+    {id:"d23", week:"Letter W", reference:"1 John 4:19", text:"We love because he first loved us.", mastery:0, current:false},
+    {id:"d24", week:"Letter X", reference:"Psalm 26:2", text:"eXamine me, Lord, and try me, test my mind and my heart.", mastery:0, current:false},
+    {id:"d25", week:"Letter Y", reference:"Psalm 119:105", text:"Your word is a lamp for my feet, a light on my path.", mastery:0, current:false},
+    {id:"d26", week:"Letter Z", reference:"Luke 19:5", text:"Zacchaeus, come down immediately. I must stay at your house today.", mastery:0, current:false}
+  ];
+
+  const root = document.getElementById('vg-root');
+
+  const petalPalette = ['#F2637A','#F4B740','#4FA8D8','#B37AD6','#F2637A','#4FA8D8'];
+
+  function uid(){ return 'v' + Date.now() + Math.floor(Math.random()*1000); }
+
+  async function loadVerses(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        verses = JSON.parse(raw);
+      } else {
+        verses = DEFAULT_VERSES.map(v => Object.assign({}, v));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(verses));
+      }
+    }catch(e){
+      verses = DEFAULT_VERSES.map(v => Object.assign({}, v));
+    }
+    loaded = true;
+    render();
+  }
+
+  async function saveVerses(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(verses));
+    }catch(e){
+      console.error('Could not save', e);
+    }
+  }
+
+  function stageFor(mastery){
+    if(mastery >= 85) return 'bloom';
+    if(mastery >= 55) return 'bud';
+    if(mastery >= 25) return 'sprout';
+    return 'seed';
+  }
+  function stageLabel(s){
+    return {seed:'Just planted', sprout:'Sprouting', bud:'Budding', bloom:'In full bloom'}[s];
+  }
+
+  function plantSVG(stage, color){
+    const w=90,h=100;
+    let inner = '';
+    if(stage === 'seed'){
+      inner = `<ellipse cx="45" cy="86" rx="10" ry="6" fill="${color}"/>`;
+    } else if(stage === 'sprout'){
+      inner = `
+        <path d="M45 90 C45 65 45 55 45 55" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M45 62 C33 58 28 66 30 74" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M45 58 C57 54 62 62 60 70" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    } else if(stage === 'bud'){
+      inner = `
+        <path d="M45 90 C45 55 45 40 45 40" stroke="var(--leaf)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M45 66 C30 60 24 70 27 80" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M45 60 C60 54 66 64 63 74" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <ellipse cx="45" cy="34" rx="11" ry="15" fill="${color}" opacity="0.8"/>`;
+    } else {
+      inner = `
+        <path d="M45 90 C45 55 45 36 45 36" stroke="var(--leaf)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M45 68 C28 62 22 72 25 82" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M45 60 C62 54 68 64 65 74" stroke="var(--leaf)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <g transform="translate(45,26)">
+          <ellipse cx="0" cy="-12" rx="9" ry="14" fill="${color}"/>
+          <ellipse cx="0" cy="12" rx="9" ry="14" fill="${color}"/>
+          <ellipse cx="-12" cy="0" rx="14" ry="9" fill="${color}"/>
+          <ellipse cx="12" cy="0" rx="14" ry="9" fill="${color}"/>
+          <circle cx="0" cy="0" r="7" fill="var(--gold)"/>
+        </g>`;
+    }
+    return `<svg width="${w}" height="${h}" viewBox="0 0 90 100" aria-hidden="true">
+      <ellipse cx="45" cy="92" rx="34" ry="7" fill="var(--soil)"/>
+      ${inner}
+    </svg>`;
+  }
+
+  function lockSVG(){
+    return `<svg width="60" height="70" viewBox="0 0 60 70" aria-hidden="true">
+      <rect x="14" y="30" width="32" height="28" rx="6" fill="#C9BC98"/>
+      <path d="M20 30 V20 a10 10 0 0 1 20 0 V30" fill="none" stroke="#C9BC98" stroke-width="5"/>
+      <circle cx="30" cy="42" r="4" fill="#FFFBF2"/>
+      <rect x="28" y="44" width="4" height="8" rx="2" fill="#FFFBF2"/>
+    </svg>`;
+  }
+
+  function esc(s){
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function render(){
+    if(!loaded){
+      root.innerHTML = '<div class="vg-loading">Loading your garden...</div>';
+      return;
+    }
+    let html = `
+      <div class="vg-header">
+        <div class="vg-sun"></div>
+        <h1>CPA 4th Grade Verse Garden</h1>
+        <p>Plant a verse each week. Practice it. Watch it grow.</p>
+      </div>
+      <div class="vg-toolbar">
+        <button class="vg-btn" id="vg-add-btn">+ Plant a new verse</button>
+        <button class="vg-btn secondary" id="vg-bulk-btn">Bulk add verses</button>
+        <button class="vg-btn secondary" id="vg-edit-toggle">${editMode ? 'Done editing' : 'Manage verses'}</button>
+        ${editMode ? '<button class="vg-btn secondary" id="vg-change-pin">Change teacher PIN</button>' : ''}
+      </div>
+    `;
+
+    if(verses.length === 0){
+      html += `
+        <div class="vg-empty">
+          <h2>Your garden is empty</h2>
+          <p>Plant your class's first memory verse to get started. Kids will see it here and can practice it in four different ways. Plants grow a little each time a verse is practiced, so keep coming back even after getting it right!</p>
+          <button class="vg-btn" id="vg-empty-add">+ Plant your first verse</button>
+        </div>`;
+    } else {
+      html += '<div class="vg-garden">';
+      let currentIndex = verses.findIndex(v => v.current);
+      if(currentIndex === -1) currentIndex = 0;
+      verses.forEach((v, i) => {
+        const locked = i > currentIndex;
+        const stage = stageFor(v.mastery || 0);
+        const color = petalPalette[i % petalPalette.length];
+        html += `
+          <div class="vg-card ${locked ? 'vg-locked' : ''}" data-id="${v.id}" ${locked ? '' : 'tabindex="0" role="button"'} aria-label="${locked ? 'Locked: ' + esc(v.reference) : 'Practice ' + esc(v.reference)}" style="${v.current ? 'border-color:var(--gold);border-width:3px;' : ''}">
+            ${v.current ? '<div class="vg-featured-badge">This week</div>' : ''}
+            <div class="vg-week">${esc(v.week || 'Verse')}</div>
+            <div class="vg-plantbox">${locked ? lockSVG() : plantSVG(stage, color)}</div>
+            <p class="vg-ref">${locked ? 'Coming soon' : esc(v.reference)}</p>
+            <div class="vg-stage-label">${locked ? 'Locked' : stageLabel(stage)}</div>
+            ${editMode ? `
+              <div class="vg-edit-row">
+                <button class="vg-icon-btn vg-star-btn" data-id="${v.id}" aria-label="${v.current ? 'Unmark as this week' : 'Mark as this week'}" title="${v.current ? 'Unmark as this week' : 'Mark as this week'}">${v.current ? '&#9733;' : '&#9734;'}</button>
+                <button class="vg-icon-btn vg-edit-btn" data-id="${v.id}" aria-label="Edit verse" title="Edit">&#9998;</button>
+                <button class="vg-icon-btn vg-del-btn" data-id="${v.id}" aria-label="Delete verse" title="Delete">&#128465;</button>
+              </div>` : ''}
+          </div>`;
+      });
+      html += '</div>';
+    }
+
+    root.innerHTML = html;
+
+    const addBtn = document.getElementById('vg-add-btn');
+    if(addBtn) addBtn.onclick = () => openAddEdit(null);
+    const bulkBtn = document.getElementById('vg-bulk-btn');
+    if(bulkBtn) bulkBtn.onclick = openBulkImport;
+    const emptyAdd = document.getElementById('vg-empty-add');
+    if(emptyAdd) emptyAdd.onclick = () => openAddEdit(null);
+    const editToggle = document.getElementById('vg-edit-toggle');
+    if(editToggle) editToggle.onclick = () => {
+      if(editMode){ editMode = false; render(); return; }
+      if(checkPin()){ editMode = true; render(); }
+    };
+    const changePinBtn = document.getElementById('vg-change-pin');
+    if(changePinBtn) changePinBtn.onclick = () => {
+      const newPin = prompt('Enter a new teacher PIN:');
+      if(!newPin) return;
+      const confirmPin = prompt('Enter the new PIN again to confirm:');
+      if(newPin !== confirmPin){
+        alert('Those PINs did not match, so it was not changed.');
+        return;
+      }
+      setPin(newPin);
+      alert('Teacher PIN updated.');
+    };
+
+    document.querySelectorAll('.vg-card:not(.vg-locked)').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if(e.target.closest('.vg-edit-btn') || e.target.closest('.vg-del-btn') || e.target.closest('.vg-star-btn')) return;
+        openPractice(card.dataset.id);
+      });
+      card.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          openPractice(card.dataset.id);
+        }
+      });
+    });
+    document.querySelectorAll('.vg-edit-btn').forEach(b => {
+      b.addEventListener('click', (e) => { e.stopPropagation(); openAddEdit(b.dataset.id); });
+    });
+    document.querySelectorAll('.vg-star-btn').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = b.dataset.id;
+        const target = verses.find(x => x.id === id);
+        const wasCurrent = target.current;
+        verses.forEach(x => { x.current = false; });
+        target.current = !wasCurrent;
+        saveVerses();
+        render();
+      });
+    });
+    document.querySelectorAll('.vg-del-btn').forEach(b => {
+      b.addEventListener('click', (e) => { e.stopPropagation(); deleteVerse(b.dataset.id); });
+    });
+  }
+
+  function deleteVerse(id){
+    const v = verses.find(x => x.id === id);
+    if(!v) return;
+    if(!confirm(`Remove "${v.reference}" from the garden?`)) return;
+    verses = verses.filter(x => x.id !== id);
+    saveVerses();
+    render();
+  }
+
+  function openAddEdit(id){
+    const editing = !!id;
+    const v = editing ? verses.find(x => x.id === id) : {week:'', reference:'', text:''};
+    const overlay = document.createElement('div');
+    overlay.className = 'vg-overlay';
+    overlay.innerHTML = `
+      <div class="vg-modal">
+        <button class="vg-close" aria-label="Close">&times;</button>
+        <h2>${editing ? 'Edit verse' : 'Plant a new verse'}</h2>
+        <p class="vg-sub">Translation: NIV (type the verse text below).</p>
+        <label class="vg-label" for="vg-in-week">Week label</label>
+        <input type="text" id="vg-in-week" placeholder="Week 1" value="${esc(v.week)}">
+        <label class="vg-label" for="vg-in-ref">Reference</label>
+        <input type="text" id="vg-in-ref" placeholder="John 3:16" value="${esc(v.reference)}">
+        <label class="vg-label" for="vg-in-text">Verse text</label>
+        <textarea id="vg-in-text" placeholder="Type the full verse here">${esc(v.text)}</textarea>
+        <div class="vg-back-row">
+          <button class="vg-btn secondary" id="vg-cancel">Cancel</button>
+          <button class="vg-btn" id="vg-save">${editing ? 'Save changes' : 'Plant verse'}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.vg-close').onclick = close;
+    overlay.querySelector('#vg-cancel').onclick = close;
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) close(); });
+    overlay.querySelector('#vg-save').onclick = () => {
+      const week = overlay.querySelector('#vg-in-week').value.trim();
+      const reference = overlay.querySelector('#vg-in-ref').value.trim();
+      const text = overlay.querySelector('#vg-in-text').value.trim();
+      if(!reference || !text){
+        alert('Please fill in the reference and the verse text.');
+        return;
+      }
+      if(editing){
+        v.week = week; v.reference = reference; v.text = text;
+      } else {
+        verses.push({id: uid(), week, reference, text, mastery: 0, current: false});
+      }
+      saveVerses();
+      close();
+      render();
+    };
+  }
+
+  function openBulkImport(){
+    const overlay = document.createElement('div');
+    overlay.className = 'vg-overlay';
+    overlay.innerHTML = `
+      <div class="vg-modal">
+        <button class="vg-close" aria-label="Close">&times;</button>
+        <h2>Bulk add verses</h2>
+        <p class="vg-sub">Paste one verse per line, using a vertical bar ( | ) to separate the parts: <strong>Week label | Reference | Verse text</strong></p>
+        <p class="vg-sub" style="margin-top:-0.6rem;">Example:<br>Week 1 | Philippians 4:13 | I can do all this through him who gives me strength.<br>Week 2 | Joshua 1:9 | Have I not commanded you? Be strong and courageous...</p>
+        <textarea id="vg-bulk-text" style="min-height:220px;" placeholder="Week 1 | Philippians 4:13 | I can do all this through him who gives me strength."></textarea>
+        <div class="vg-back-row">
+          <button class="vg-btn secondary" id="vg-bulk-cancel">Cancel</button>
+          <button class="vg-btn" id="vg-bulk-import">Import verses</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.vg-close').onclick = close;
+    overlay.querySelector('#vg-bulk-cancel').onclick = close;
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) close(); });
+    overlay.querySelector('#vg-bulk-import').onclick = () => {
+      const raw = overlay.querySelector('#vg-bulk-text').value;
+      const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+      let added = 0, skipped = 0;
+      lines.forEach(line => {
+        const parts = line.split('|').map(p => p.trim());
+        let week = '', reference = '', text = '';
+        if(parts.length >= 3){
+          week = parts[0]; reference = parts[1]; text = parts.slice(2).join('|').trim();
+        } else if(parts.length === 2){
+          reference = parts[0]; text = parts[1];
+        }
+        if(!reference || !text){ skipped++; return; }
+        verses.push({id: uid(), week, reference, text, mastery: 0, current: false});
+        added++;
+      });
+      if(added > 0){ saveVerses(); }
+      close();
+      render();
+      if(skipped > 0){
+        alert(`Added ${added} verse${added===1?'':'s'}. Skipped ${skipped} line${skipped===1?'':'s'} that were missing a reference or text.`);
+      }
+    };
+  }
+
+
+  function openPractice(id){
+    activeVerseId = id;
+    activeMode = null;
+    renderPracticeOverlay();
+  }
+
+  function currentVerse(){
+    return verses.find(v => v.id === activeVerseId);
+  }
+
+  function closePractice(){
+    const ov = document.getElementById('vg-practice-overlay');
+    if(ov) ov.remove();
+    activeVerseId = null;
+    activeMode = null;
+    gameState = {};
+    render();
+  }
+
+  function renderPracticeOverlay(){
+    let ov = document.getElementById('vg-practice-overlay');
+    if(!ov){
+      ov = document.createElement('div');
+      ov.id = 'vg-practice-overlay';
+      ov.className = 'vg-overlay';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', (e) => { if(e.target === ov) closePractice(); });
+    }
+    const v = currentVerse();
+    if(!v){ closePractice(); return; }
+    const stage = stageFor(v.mastery || 0);
+
+    let body = '';
+    if(!activeMode){
+      body = `
+        <div class="vg-mastery-row">
+          <div class="vg-mastery-track"><div class="vg-mastery-fill" style="width:${v.mastery||0}%"></div></div>
+          <div class="vg-mastery-pct">${v.mastery||0}%</div>
+        </div>
+        <p class="vg-sub" style="margin-top:0;">${stageLabel(stage)} &middot; choose how to practice</p>
+        <p class="vg-sub" style="margin-top:-0.5rem;">Plants don't bloom all at once! Practice this verse a few times, even after you've gotten it right, to help it grow all the way.</p>
+        <div class="vg-modeGrid">
+          <div class="vg-modeCard" data-mode="flash"><span class="vg-mode-emoji">&#127793;</span><span class="vg-mode-title">Flashcards</span></div>
+          <div class="vg-modeCard" data-mode="blank"><span class="vg-mode-emoji">&#9997;</span><span class="vg-mode-title">Fill in the blank</span></div>
+          <div class="vg-modeCard" data-mode="build"><span class="vg-mode-emoji">&#129513;</span><span class="vg-mode-title">Build the verse</span></div>
+          <div class="vg-modeCard" data-mode="type"><span class="vg-mode-emoji">&#8987;</span><span class="vg-mode-title">Type it out</span></div>
+        </div>`;
+    } else if(activeMode === 'flash'){
+      body = renderFlash(v);
+    } else if(activeMode === 'blank'){
+      body = renderBlank(v);
+    } else if(activeMode === 'build'){
+      body = renderBuild(v);
+    } else if(activeMode === 'type'){
+      body = renderType(v);
+    }
+
+    ov.innerHTML = `
+      <div class="vg-modal">
+        <button class="vg-close" aria-label="Close">&times;</button>
+        <h2>${esc(v.reference)}</h2>
+        <p class="vg-sub" style="margin-top:-0.3rem;">${esc(v.week || '')}</p>
+        <div id="vg-practice-body">${body}</div>
+        <div class="vg-back-row">
+          ${activeMode ? '<button class="vg-btn secondary" id="vg-back">&larr; Choose another game</button>' : '<span></span>'}
+          <button class="vg-btn secondary" id="vg-done">Done for now</button>
+        </div>
+      </div>`;
+
+    ov.querySelector('.vg-close').onclick = closePractice;
+    ov.querySelector('#vg-done').onclick = closePractice;
+    const back = ov.querySelector('#vg-back');
+    if(back) back.onclick = () => { activeMode = null; gameState = {}; renderPracticeOverlay(); };
+
+    if(!activeMode){
+      ov.querySelectorAll('.vg-modeCard').forEach(c => {
+        c.onclick = () => { activeMode = c.dataset.mode; gameState = {}; renderPracticeOverlay(); };
+      });
+    } else if(activeMode === 'flash'){
+      wireFlash(v);
+    } else if(activeMode === 'blank'){
+      wireBlank(v);
+    } else if(activeMode === 'build'){
+      wireBuild(v);
+    } else if(activeMode === 'type'){
+      wireType(v);
+    }
+  }
+
+  function applyScore(v, scorePercent){
+    const prev = v.mastery || 0;
+    const next = Math.round(prev * 0.65 + scorePercent * 0.35);
+    v.mastery = Math.max(0, Math.min(100, next));
+    saveVerses();
+  }
+
+  function feedbackFor(scorePercent){
+    if(scorePercent >= 85) return {cls:'good', text:'Wonderful! That verse is really taking root.'};
+    if(scorePercent >= 50) return {cls:'mid', text:'Good effort! A little more practice and it will bloom.'};
+    return {cls:'low', text:'Keep going! Try again to help it grow.'};
+  }
+
+  function renderFlash(v){
+    if(gameState.flashRevealed === undefined) gameState.flashRevealed = false;
+    return `
+      <div class="vg-flash" id="vg-flash-card">
+        ${gameState.flashRevealed ? esc(v.text) : `Tap to reveal the verse<span class="vg-flash-hint">${esc(v.reference)}</span>`}
+      </div>
+      ${gameState.flashRevealed ? `
+        <div class="vg-rate-row">
+          <button class="vg-btn secondary" id="vg-flash-again">Still learning</button>
+          <button class="vg-btn" id="vg-flash-got">Got it!</button>
+        </div>` : ''}
+    `;
+  }
+  function wireFlash(v){
+    const card = document.getElementById('vg-flash-card');
+    if(card) card.onclick = () => { gameState.flashRevealed = true; renderPracticeOverlay(); };
+    const again = document.getElementById('vg-flash-again');
+    const got = document.getElementById('vg-flash-got');
+    if(again) again.onclick = () => { applyScore(v, 35); gameState.flashRevealed = false; renderPracticeOverlay(); };
+    if(got) got.onclick = () => { applyScore(v, 100); gameState.flashRevealed = false; renderPracticeOverlay(); };
+  }
+
+  function wordsOf(text){
+    return text.split(/\s+/).filter(Boolean);
+  }
+  function normalize(w){
+    return w.toLowerCase().replace(/[^\w']/g, '');
+  }
+
+  function renderBlank(v){
+    if(!gameState.blankSetup){
+      const words = wordsOf(v.text);
+      const blankIdx = new Set();
+      const targetCount = Math.max(1, Math.round(words.length * 0.3));
+      while(blankIdx.size < targetCount && blankIdx.size < words.length){
+        blankIdx.add(Math.floor(Math.random() * words.length));
+      }
+      gameState.blankSetup = {words, blankIdx: Array.from(blankIdx)};
+      gameState.blankChecked = false;
+    }
+    const {words, blankIdx} = gameState.blankSetup;
+    let html = '<div class="vg-blankwrap">';
+    words.forEach((w, i) => {
+      if(blankIdx.includes(i)){
+        const cls = gameState.blankChecked ? (gameState.blankResults && gameState.blankResults[i] ? 'correct' : 'wrong') : '';
+        html += `<input type="text" class="vg-blank ${cls}" data-idx="${i}" style="width:${Math.max(4, w.length + 2)}ch" ${gameState.blankChecked ? 'disabled' : ''} value="${gameState.blankChecked ? esc(w) : ''}">`;
+      } else {
+        html += ' ' + esc(w) + ' ';
+      }
+    });
+    html += '</div>';
+    if(!gameState.blankChecked){
+      html += '<button class="vg-btn" id="vg-blank-check" style="margin-top:1rem;">Check answers</button>';
+    } else {
+      const fb = feedbackFor(gameState.blankScore);
+      html += `<div class="vg-feedback ${fb.cls}">${fb.text} (${gameState.blankScore}% correct)</div>`;
+      html += '<button class="vg-btn secondary" id="vg-blank-retry" style="margin-top:0.8rem;">Try again</button>';
+    }
+    return html;
+  }
+  function wireBlank(v){
+    const checkBtn = document.getElementById('vg-blank-check');
+    if(checkBtn){
+      checkBtn.onclick = () => {
+        const {words, blankIdx} = gameState.blankSetup;
+        const results = {};
+        let correct = 0;
+        document.querySelectorAll('.vg-blank').forEach(inp => {
+          const idx = parseInt(inp.dataset.idx, 10);
+          const ok = normalize(inp.value) === normalize(words[idx]);
+          results[idx] = ok;
+          if(ok) correct++;
+        });
+        gameState.blankResults = results;
+        gameState.blankChecked = true;
+        gameState.blankScore = Math.round((correct / blankIdx.length) * 100);
+        applyScore(v, gameState.blankScore);
+        renderPracticeOverlay();
+      };
+    }
+    const retry = document.getElementById('vg-blank-retry');
+    if(retry){
+      retry.onclick = () => { gameState.blankSetup = null; gameState.blankChecked = false; renderPracticeOverlay(); };
+    }
+  }
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function renderBuild(v){
+    if(!gameState.buildSetup){
+      const words = wordsOf(v.text);
+      const tiles = words.map((w, i) => ({word: w, origIndex: i, tileId: 't'+i}));
+      gameState.buildSetup = {tiles, order: shuffle(tiles.map(t => t.tileId))};
+      gameState.buildAnswer = [];
+      gameState.buildChecked = false;
+    }
+    const {tiles, order} = gameState.buildSetup;
+    const placedIds = new Set(gameState.buildAnswer);
+    let poolHtml = order.map(id => {
+      const t = tiles.find(x => x.tileId === id);
+      const placed = placedIds.has(id);
+      return `<div class="vg-tile ${placed ? 'placed' : ''}" data-tile="${id}">${esc(t.word)}</div>`;
+    }).join('');
+    let answerHtml = gameState.buildAnswer.map(id => {
+      const t = tiles.find(x => x.tileId === id);
+      return `<div class="vg-tile answer-tile" data-tile="${id}">${esc(t.word)}</div>`;
+    }).join('');
+    let html = `
+      <p class="vg-sub" style="margin-top:0;">Tap the words in order to build the verse.</p>
+      <div class="vg-tiles-answer" id="vg-build-answer">${answerHtml || '<span style="color:var(--ink-soft);font-size:0.85rem;">Tap words below to start</span>'}</div>
+      <div class="vg-tiles-pool" id="vg-build-pool">${poolHtml}</div>
+    `;
+    if(!gameState.buildChecked){
+      html += `<div class="vg-back-row" style="margin-top:1rem;">
+        <button class="vg-btn secondary" id="vg-build-clear">Clear</button>
+        <button class="vg-btn" id="vg-build-check" ${gameState.buildAnswer.length === tiles.length ? '' : 'disabled'}>Check order</button>
+      </div>`;
+    } else {
+      const fb = feedbackFor(gameState.buildScore);
+      html += `<div class="vg-feedback ${fb.cls}">${fb.text} (${gameState.buildScore}% correct)</div>`;
+      html += '<button class="vg-btn secondary" id="vg-build-retry" style="margin-top:0.8rem;">Try again</button>';
+    }
+    return html;
+  }
+  function wireBuild(v){
+    const pool = document.getElementById('vg-build-pool');
+    if(pool){
+      pool.querySelectorAll('.vg-tile').forEach(t => {
+        t.onclick = () => {
+          if(gameState.buildChecked) return;
+          const id = t.dataset.tile;
+          if(gameState.buildAnswer.includes(id)) return;
+          gameState.buildAnswer.push(id);
+          renderPracticeOverlay();
+        };
+      });
+    }
+    const answerBox = document.getElementById('vg-build-answer');
+    if(answerBox){
+      answerBox.querySelectorAll('.vg-tile').forEach(t => {
+        t.onclick = () => {
+          if(gameState.buildChecked) return;
+          const id = t.dataset.tile;
+          gameState.buildAnswer = gameState.buildAnswer.filter(x => x !== id);
+          renderPracticeOverlay();
+        };
+      });
+    }
+    const clearBtn = document.getElementById('vg-build-clear');
+    if(clearBtn) clearBtn.onclick = () => { gameState.buildAnswer = []; renderPracticeOverlay(); };
+    const checkBtn = document.getElementById('vg-build-check');
+    if(checkBtn){
+      checkBtn.onclick = () => {
+        const {tiles} = gameState.buildSetup;
+        let correct = 0;
+        gameState.buildAnswer.forEach((id, i) => {
+          const t = tiles.find(x => x.tileId === id);
+          if(t.origIndex === i) correct++;
+        });
+        gameState.buildScore = Math.round((correct / tiles.length) * 100);
+        gameState.buildChecked = true;
+        applyScore(v, gameState.buildScore);
+        renderPracticeOverlay();
+      };
+    }
+    const retry = document.getElementById('vg-build-retry');
+    if(retry){
+      retry.onclick = () => { gameState.buildSetup = null; gameState.buildChecked = false; renderPracticeOverlay(); };
+    }
+  }
+
+  function renderType(v){
+    if(gameState.typeChecked === undefined){
+      gameState.typeChecked = false;
+      gameState.typeValue = '';
+    }
+    let html = `<p class="vg-sub" style="margin-top:0;">Type the whole verse from memory.</p>
+      <textarea id="vg-type-input" style="min-height:110px;" ${gameState.typeChecked ? 'disabled' : ''}>${esc(gameState.typeValue)}</textarea>`;
+    if(!gameState.typeChecked){
+      html += '<button class="vg-btn" id="vg-type-check" style="margin-top:0.8rem;">Check my verse</button>';
+    } else {
+      const fb = feedbackFor(gameState.typeScore);
+      html += `<div class="vg-typeresult">${gameState.typeDiffHtml}</div>`;
+      html += `<div class="vg-feedback ${fb.cls}">${fb.text} (${gameState.typeScore}% of words correct)</div>`;
+      html += '<button class="vg-btn secondary" id="vg-type-retry" style="margin-top:0.8rem;">Try again</button>';
+    }
+    return html;
+  }
+  function wireType(v){
+    const input = document.getElementById('vg-type-input');
+    if(input){
+      input.oninput = () => { gameState.typeValue = input.value; };
+    }
+    const checkBtn = document.getElementById('vg-type-check');
+    if(checkBtn){
+      checkBtn.onclick = () => {
+        const original = wordsOf(v.text).map(normalize);
+        const typed = wordsOf(gameState.typeValue || '').map(normalize);
+        let correct = 0;
+        const maxLen = Math.max(original.length, typed.length);
+        let diffParts = [];
+        for(let i = 0; i < maxLen; i++){
+          const ow = original[i];
+          const tw = typed[i];
+          if(ow && tw && ow === tw){
+            correct++;
+            diffParts.push(`<span class="vg-word-ok">${esc(wordsOf(v.text)[i])}</span>`);
+          } else if(ow){
+            diffParts.push(`<span class="vg-word-bad">${esc(wordsOf(v.text)[i])}</span>`);
+          }
+        }
+        gameState.typeScore = Math.round((correct / original.length) * 100);
+        gameState.typeDiffHtml = diffParts.join(' ');
+        gameState.typeChecked = true;
+        applyScore(v, gameState.typeScore);
+        renderPracticeOverlay();
+      };
+    }
+    const retry = document.getElementById('vg-type-retry');
+    if(retry){
+      retry.onclick = () => { gameState.typeChecked = false; gameState.typeValue = ''; renderPracticeOverlay(); };
+    }
+  }
+
+  loadVerses();
+})();
+</script>
+</body>
+</html>
